@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SistemaDePedidosSimples.Data;
+using SistemaDePedidosSimples.Models;
+using System.Threading.Tasks;
 
 namespace SistemaDePedidosSimples.Controllers
 {
@@ -6,10 +10,12 @@ namespace SistemaDePedidosSimples.Controllers
     [Route("api/Pedidos")]
     public class PedidosController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult BuscarProdutos()
+        private readonly ApiDbContext _context;
+
+        public PedidosController(ApiDbContext context)
         {
-            return Ok("Lista de pedidos");
+            _context = context;
         }
+
     }
 }
