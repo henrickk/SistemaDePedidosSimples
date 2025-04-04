@@ -30,12 +30,12 @@ namespace SistemaDePedidosSimples.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DataPedido")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NomeCliente")
+                    b.Property<string>("Cliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataPedido")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");

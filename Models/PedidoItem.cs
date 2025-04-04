@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SistemaDePedidosSimples.Models
 {
@@ -8,22 +9,24 @@ namespace SistemaDePedidosSimples.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public int PedidoId { get; set; }
+        //[Required(ErrorMessage = "O campo {0} é obrigatório")]
+        public int PedidoId { get; set; } // FK
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public string? Produto { get; set; }
+        public string Produto { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [Range(1, int.MaxValue, ErrorMessage = "A quantidade deve ser maior que zero")]
+        [Range(1, int.MaxValue, ErrorMessage = "A {0} deve ser pelo menos 1")]
         public int Quantidade { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [Range(0.01, double.MaxValue, ErrorMessage = "O {0} deve ser maior que zero")]
         public decimal PrecoUnitario { get; set; }
 
-        //relacionamento com Pedido
+        // Relacionamento com Pedido
         [ForeignKey("PedidoId")]
-        public Pedido Pedido { get; set; }
+        [JsonIgnore]
+        public virtual Pedido? Pedidos { get; set; }
     }
+
 }

@@ -17,7 +17,7 @@ namespace SistemaDePedidosSimples.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("ListarPedidos")]
         public async Task<ActionResult<IEnumerable<Pedido>>> ListarPedidos()
         {
             var pedidos = await _context.Pedidos.Include(p => p.Itens).ToListAsync();
@@ -25,7 +25,7 @@ namespace SistemaDePedidosSimples.Controllers
             return Ok(pedidos);
         }
 
-        [HttpGet("api/{int:id}")]
+        [HttpGet("BuscarPedido/{id:int}")]
         public async Task<ActionResult<Pedido>> BuscarPedido(int id)
         {
             var pedidos = await _context.Pedidos.Include(p => p.Itens).FirstOrDefaultAsync(p => p.Id == id);
@@ -43,6 +43,22 @@ namespace SistemaDePedidosSimples.Controllers
             return Ok(pedidos);
         }
 
-
+        [HttpPost("CriarPedido")]
+        public async Task<ActionResult<Pedido>> CriarPedido(Pedido pedido)
+        {
+            if (pedido == null || pedido.Itens == null || !pedido.Itens.Any())
+            {
+                return BadRequest("O pedido deve conter pelo menos um item.");
+            }
+            // Definir o campo PedidoId em cada item
+            foreach (var item in pedido.Itens)
+            {
+                item.PedidoId = pedido.Id;
+            }
+            pedido.Total = pedido.Itens.Sum(i => i.PrecoUnitario * i.Quantidade);
+            _context.Pedidos.Add(pedido);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(BuscarPedido), new { id = pedido.Id }, pedido);
+        }
     }
-} 
+}

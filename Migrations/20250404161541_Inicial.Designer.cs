@@ -12,7 +12,7 @@ using SistemaDePedidosSimples.Data;
 namespace SistemaDePedidosSimples.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250403003421_Inicial")]
+    [Migration("20250404161541_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -33,12 +33,12 @@ namespace SistemaDePedidosSimples.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DataPedido")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NomeCliente")
+                    b.Property<string>("Cliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataPedido")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");

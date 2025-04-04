@@ -17,7 +17,7 @@ namespace SistemaDePedidosSimples.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataPedido = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
