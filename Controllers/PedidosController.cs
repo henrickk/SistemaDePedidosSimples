@@ -60,5 +60,14 @@ namespace SistemaDePedidosSimples.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(BuscarPedido), new { id = pedido.Id }, pedido);
         }
+
+        [HttpPut("AtualizarPedido/{id:int}")]
+        public async Task<ActionResult<Pedido>> AtualizarPedido(int id, Pedido pedido)
+        {
+            _context.Entry(pedido).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
