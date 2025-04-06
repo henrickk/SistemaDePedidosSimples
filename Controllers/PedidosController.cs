@@ -60,13 +60,44 @@ namespace SistemaDePedidosSimples.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(BuscarPedido), new { id = pedido.Id }, pedido);
         }
-
-        [HttpPut("AtualizarPedido/{id:int}")]
-        public async Task<ActionResult<Pedido>> AtualizarPedido(int id, Pedido pedido)
+         
+        [HttpPost("AdicionarItemAoPedidoExistente/{pedidoId}")]
+        public async Task<IActionResult> AdicionarItemAoPedidoExistente(int pedidoId, [FromBody] PedidoItem item)
         {
-            _context.Entry(pedido).State = EntityState.Modified;
+            var pedido = await _context.Pedidos.Include(p => p.Itens).FirstOrDefaultAsync(p => p.Id == pedidoId);
+
+            if (pedido == null)
+            {
+                return NotFound("Pedido não encontrado.");
+            }
+
+            item.PedidoId = pedidoId;
+            pedido.Itens.Add(item);
+            pedido.Total += item.PrecoUnitario * item.Quantidade;
 
             await _context.SaveChangesAsync();
+
+            return Ok(item);
+        }
+
+        [HttpDelete("DeletarPedido/{id:int}")]
+        public async Task<ActionResult<Pedido>> DeletarPedido(int id)
+        {
+            if (_context.Pedidos == null)
+            {
+                return NotFound();
+            }
+
+            var pedido = await _context.Pedidos.FindAsync(id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pedidos.Remove(pedido);
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
     }
