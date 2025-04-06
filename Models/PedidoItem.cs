@@ -26,7 +26,7 @@ namespace SistemaDePedidosSimples.Models
         // Relacionamento com Pedido
         [ForeignKey("PedidoId")]
         [JsonIgnore]
-        public virtual Pedido? Pedidos { get; set; }
+        public virtual Pedido? Pedido { get; set; }
     }
 
 }
