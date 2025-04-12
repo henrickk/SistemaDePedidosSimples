@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SistemaDePedidosSimples.Controllers
 {
     [ApiController]
-    [Route("api/Pedidos")]
+    [Route("api/pedidos")]
     public class PedidosController : ControllerBase
     {
         private readonly ApiDbContext _context;
@@ -17,7 +17,7 @@ namespace SistemaDePedidosSimples.Controllers
             _context = context;
         }
 
-        [HttpGet("ListarPedidos")]
+        [HttpGet("listrar-pedidos")]
         public async Task<ActionResult<IEnumerable<Pedido>>> ListarPedidos()
         {
             var pedidos = await _context.Pedidos.Include(p => p.Itens).ToListAsync();
@@ -25,7 +25,7 @@ namespace SistemaDePedidosSimples.Controllers
             return Ok(pedidos);
         }
 
-        [HttpGet("BuscarPedido/{id:int}")]
+        [HttpGet("buscar-pedidos/{id:int}")]
         public async Task<ActionResult<Pedido>> BuscarPedido(int id)
         {
             var pedidos = await _context.Pedidos.Include(p => p.Itens).FirstOrDefaultAsync(p => p.Id == id);
@@ -43,7 +43,7 @@ namespace SistemaDePedidosSimples.Controllers
             return Ok(pedidos);
         }
 
-        [HttpPost("CriarPedido")]
+        [HttpPost("criar-pedidos")]
         public async Task<ActionResult<Pedido>> CriarPedido(Pedido pedido)
         {
             if (pedido == null || pedido.Itens == null || !pedido.Itens.Any())
@@ -61,7 +61,7 @@ namespace SistemaDePedidosSimples.Controllers
             return CreatedAtAction(nameof(BuscarPedido), new { id = pedido.Id }, pedido);
         }
          
-        [HttpPost("AdicionarItemAoPedidoExistente/{pedidoId}")]
+        [HttpPost("adicionar-item-ao-pedido-existente/{pedidoId}")]
         public async Task<IActionResult> AdicionarItemAoPedidoExistente(int pedidoId, [FromBody] PedidoItem item)
         {
             var pedido = await _context.Pedidos.Include(p => p.Itens).FirstOrDefaultAsync(p => p.Id == pedidoId);
@@ -80,7 +80,7 @@ namespace SistemaDePedidosSimples.Controllers
             return Ok(item);
         }
 
-        [HttpDelete("DeletarPedido/{id:int}")]
+        [HttpDelete("deletar-pedido/{id:int}")]
         public async Task<ActionResult<Pedido>> DeletarPedido(int id)
         {
             if (_context.Pedidos == null)
